@@ -1,0 +1,11 @@
+1 Facial_Features
+4 Blurry_Facial_Features
+3 Eye_Movement
+2 Eye_Blinking
+4 Iris
+6 Ear
+1 Keystroke_Dynamics
+5 Stylometry_Dynamics
+5 Iris Eye_Movement
+4 Keystroke_Dynamics Facial_Features
+1 Facial_Features Iris
