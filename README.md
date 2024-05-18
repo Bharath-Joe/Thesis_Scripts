@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Python script performs a Multi-Criteria Decision Analysis (MCDA) using the PROMETHEE II method. The analysis ranks various modalities based on specific criteria (security, privacy, usability, and performance) with predefined weights. This particular script is tailored for a use case involving biometric modalities and their performance scores derived from specific sensors.
+This Python script performs a Multi-Criteria Decision Analysis (MCDA) using the PROMETHEE II method. The analysis ranks various modalities based on specific criteria (security, privacy, usability, and performance) with predefined weights. This particular script is tailored for a use case involving modalities and their performance scores derived from specific sensors.
 
 ## Use Case
 
