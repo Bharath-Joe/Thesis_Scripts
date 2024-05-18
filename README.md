@@ -35,11 +35,15 @@ pip install numpy
 
 ## MCDA_alternatives.txt Format
 The input file should have the following format:
+
 <performance_score> <modality_1> <modality_2> ... <modality_n>
 
 Example:
+
 5 Facial_Features Iris
+
 2 Eye_Blinking Keystroke_Dynamics
+
 ...
 
 ## Modifying the Script
