@@ -1,3 +1,5 @@
+import numpy as np
+
 def main():
     # In this code, we assume the specific values actually apply to the system
     # In this code, the modality scores will be for a single modalality type.
@@ -9,16 +11,22 @@ def main():
     database_1 = {
         "General": [8.23, 3.17, 6.89, 2.58],
         "Specific": [],
-        "Modality": {"f": 5.64},
+        "Modality": {"f": [5.64]},
     }
     database_2 = {
-        "General": [4.65, 6.80, 5.22],
+        "General": [4.65, 6.80, 5.22, 10],
         "Specific": [5.12],
         "Modality": {"FF": [6.32]},
     }
     database_3 = {
-        "General": [],
-        "Specific": [],
+        "General": [6.8, 4.65, 5.22],
+        "Specific": [5.12],
+        "Modality": {"FF": [6.32]},
+    }
+
+    database_4 = {
+        "General": [4.13, 5.72],
+        "Specific": [6.10],
         "Modality": {},
     }
 
@@ -32,7 +40,7 @@ def main():
     }
 
     # Active Dictionary
-    database = database_2
+    database = database_3
 
     # Weight normalization with modalities
     weight_active = 0
@@ -59,26 +67,34 @@ def main():
     # Calculate Score with and without individual Modalities
     for category in categories:
         if len(database[category]) == 0 or category == "Modality":
-            average = 0
+            summation = 0
         else:
-            average = sum(database[category]) / len(database[category])
-        temp = weights[category] * average * indicatorFunction[category]
+            summation = get_summation(database[category])
+            # summation = sum(database[category]) / len(database[category])
+        temp = weights[category] * summation * indicatorFunction[category]
         score_without += temp  # Security score without modality vuln scores
         # Logic to handle how to calculate each modality security score
         if category == "Modality" and len(database[category]) != 0:
             for modality in database[category]:
-                average = sum(database[category][modality]) / len(
-                    database[category][modality]
-                )
-                temp = weights[category] * average * indicatorFunction[category]
-                modalityScores[modality] = (temp + score_without) / weight_active
+                summation = get_summation(database[category][modality])
+                # summation = sum(database[category][modality]) / len(
+                #     database[category][modality]
+                # )
+                temp = weights[category] * summation * indicatorFunction[category]
+                modalityScores[modality] = (temp + score_without)
     if weight_active_without == 0:
         print("All Other Modalities Security Score: " + str(score_without))
     else:
-        score_without = score_without / weight_active_without
+        score_without = score_without
         print("All Other Modalities Security Score: " + str(score_without))
     for modality in modalityScores:
         print(f"{modality} Modality Security Score: {modalityScores[modality]}")
+
+
+def get_summation(vulnerability_list) -> float:
+    top_values = sorted(vulnerability_list, reverse=True)[:5]
+    weights = np.exp(top_values)
+    return sum(val * weight for val, weight in zip(top_values, weights)) / 1000
 
 
 if __name__ == "__main__":

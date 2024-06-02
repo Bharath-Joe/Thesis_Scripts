@@ -2,8 +2,8 @@ import numpy as np
 
 criteria_weights = {
     "security": 0.20,
-    "privacy": 0.40,
-    "usability": 0.15,
+    "privacy": 0.45,
+    "usability": 0.10,
     "performance": 0.25,
 }
 
@@ -11,15 +11,15 @@ criteria_weights = {
 def main():
 
     analysis_scores = {
-        "Facial_Features": [5.627, 9, 4.12],
-        "Blurry_Facial_Features": [5.254, 1, 4.12],
-        "Eye_Movement": [5.254, 3, 4.12],
-        "Eye_Blinking": [5.254, 2, 4.12],
-        "Iris": [5.254, 8, 4.12],
-        "Ear": [5.254, 7, 4.12],
-        "Retina": [5.254, 8, 4.12],
-        "Keystroke_Dynamics": [5.738, 6, 1],
-        "Stylometry_Dynamics": [5.738, 5, 1],
+        "Facial_Features": [3.13, 9, 4.12],
+        "Blurry_Facial_Features": [1.90, 1, 4.12],
+        "Eye_Movement": [1.90, 3, 4.12],
+        "Eye_Blinking": [1.90, 2, 4.12],
+        "Iris": [1.90, 8, 4.12],
+        "Ear": [1.90, 7, 4.12],
+        "Retina": [1.90, 8, 4.12],
+        "Keystroke_Dynamics": [1.62, 6, 2.5],
+        "Stylometry_Dynamics": [1.62, 5, 2.5],
     }
 
     # Step 1: Parse the text file
@@ -110,6 +110,7 @@ def beneficial_normalize(scores):
 
 
 def calculate_difference(value1, value2):
+    # return value1 -value2
     return max(0, value1 - value2)
 
 
@@ -132,6 +133,13 @@ def pariwiseComparisons(
                 performance_difference = calculate_difference(
                     performance_values[i], performance_values[j]
                 )
+                # print(
+                #     "A" + str(i + 1) + "-" "A" + str(j + 1),
+                #     security_difference, 
+                #     privacy_difference ,
+                #     usability_difference, 
+                #     performance_difference
+                # )
                 aggregated_value = (
                     security_difference * criteria_weights["security"]
                     + privacy_difference * criteria_weights["privacy"]
@@ -161,8 +169,8 @@ def calculate_flows(matrix):
     col_sums = np.sum(matrix, axis=0)
     leaving_flows = row_sums / (matrix.shape[1] - 1)
     entering_flows = col_sums / (matrix.shape[0] - 1)
-    # print("Leaving Flow:", leaving_flows)
-    # print("Entering Flow:", entering_flows)
+    print("Leaving Flow:", leaving_flows)
+    print("Entering Flow:", entering_flows)
     return leaving_flows, entering_flows
 
 
@@ -170,7 +178,7 @@ def calculate_net_flows(leaving, entering):
     net_outranking_flows = {}
     for i in range(len(leaving)):
         net_outranking_flows[i + 1] = leaving[i] - entering[i]
-    # print(net_outranking_flows)
+    print(net_outranking_flows)
     return net_outranking_flows
 
 
